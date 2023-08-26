@@ -1,12 +1,12 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         File file = new File("input");
+        FileWriter fw = new FileWriter("output");
         Scanner fileReader = new Scanner(file);
         double fNum = 0, sNum=0;
         String op = "";
@@ -14,18 +14,22 @@ public class Main {
             fNum = Double.parseDouble(fileReader.next());
             op = fileReader.next();
             if (!op.equals("+") && !op.equals("-") && !op.equals("*") && !op.equals("/")) {
-                System.out.println("Operation Error!");
+                fw.write("Operation Error!");
+                fw.close(); fileReader.close();
                 System.exit(0);
             }
             sNum = Double.parseDouble(fileReader.next());
             if (sNum==0 && op.equals("/")) {
-                System.out.println("Error! Division by zero");
+                fw.write("Error! Division by zero");
+                fw.close(); fileReader.close();
                 System.exit(0);
             }
         } catch (InputMismatchException e) {
-            System.out.println("Error! Not number");
+            fw.write("Error! Not number");
+            fw.close(); fileReader.close();
             System.exit(0);
         }
-        System.out.println(op.equals("+") ? fNum+sNum : op.equals("-") ? fNum-sNum : op.equals("*") ? fNum*sNum : fNum/sNum);
+        fw.append(Double.toString(op.equals("+") ? fNum+sNum : op.equals("-") ? fNum-sNum : op.equals("*") ? fNum*sNum : fNum/sNum));
+        fw.close(); fileReader.close();
     }
 }
